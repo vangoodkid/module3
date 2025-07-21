@@ -41,6 +41,28 @@ create table instructor_class(
  foreign key(instructor_id) references instructor(id),
  foreign key(class_id) references class(id)
 );
+CREATE TABLE subject (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(50),
+  credit INT
+);
+
+-- Giả định bổ sung các bảng để truy vấn này chạy được
+CREATE TABLE subject (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(50),
+  credit INT
+);
+
+CREATE TABLE mark (
+  student_id INT,
+  subject_id INT,
+  mark FLOAT,
+  FOREIGN KEY(student_id) REFERENCES student(id),
+  FOREIGN KEY(subject_id) REFERENCES subject(id)
+);
+
+
 -- insert dữ liệu cho từng bảng
 insert into class (name) values ('c1121g1'), ('c1221g1'),('a0821i1'),('a0921i1');
 insert into room(name,class_id) values ('Ken',1), ('Jame',1),('Ada',2),('Andy',2);
@@ -64,3 +86,39 @@ insert into instructor(`name`,birthday, salary)
 --   insert into student(`name`,birthday, gender,`point`, class_id,`username`)
 --  values ('nguyen minh hai chau','1981-12-12',1,8,null,'chau');
  insert into instructor_class(class_id,instructor_id) values (1,1),(1,2),(2,1),(2,2),(3,1),(3,2);
+ 
+ -- cau1
+ select * 
+ from student as s
+ where s.name like 'h%';
+ 
+ -- cau2 
+SELECT *
+FROM class AS c
+WHERE MONTH(start_time) = 12;
+
+-- cau3
+SELECT *
+FROM subject
+WHERE credit BETWEEN 3 AND 5;
+
+
+-- cau4 
+SET SQL_SAFE_UPDATES = 0;
+
+UPDATE student
+SET class_id = 2
+WHERE name LIKE '%Hung%';
+
+SET SQL_SAFE_UPDATES = 0;
+ -- cau5
+ SELECT s.name AS StudentName, sb.name AS SubName, m.mark
+FROM mark m
+JOIN student s ON m.student_id = s.id
+JOIN subject sb ON m.subject_id = sb.id
+ORDER BY m.mark DESC, s.name ASC;
+
+
+
+ 
+ 
